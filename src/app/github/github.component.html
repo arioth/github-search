@@ -1,0 +1,19 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" novalidate>
+  <input name="username" type="text" formControlName="username" />
+  <button type="submit" [disabled]="!searchForm.valid">Search</button>
+</form>
+
+<p *ngIf="message">User not found</p>
+
+<div *ngIf="!message && !!user" class="user">
+  <h3>{{ user.login }}</h3>
+  <img [src]="user.avatar_url" alt="">
+
+  <div class="followers">
+    <h2>Followers</h2>
+    <app-follower
+      *ngFor="let follower of followers"
+      [follower]="follower"
+    ></app-follower>
+  </div>
+</div>

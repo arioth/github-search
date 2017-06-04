@@ -5,7 +5,19 @@ export class GithubSearchPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getInputText() {
+    return element(by.css('app-root input'));
+  }
+
+  getSubmitButton() {
+    return element(by.css('app-root button[type=submit]'));
+  }
+
+  getUserTitle() {
+    return element(by.css('app-root .user > h3')).getText();
+  }
+
+  getUserImage() {
+    return element(by.css('app-root .user > img')).getAttribute('src');
   }
 }

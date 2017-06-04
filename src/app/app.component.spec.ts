@@ -1,32 +1,41 @@
-import { TestBed, async } from '@angular/core/testing';
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
+import { GithubModule } from './github/github.module';
+import { NotificationService } from './github/shared/notification.service';
+import { GithubService } from './github/shared/github.service';
+import { MockGithubService } from './github/shared/mock-github.service';
 
 describe('AppComponent', () => {
+  let mockGithubService: MockGithubService;
+  let fixture: ComponentFixture<AppComponent>;
+  let app: AppComponent;
+
   beforeEach(async(() => {
+    mockGithubService = new MockGithubService();
+
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
-    }).compileComponents();
+      imports: [GithubModule],
+      providers: [
+        NotificationService,
+        { provide: GithubService, useValue: mockGithubService }
+      ]
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(AppComponent);
+      app = fixture.debugElement.componentInstance;
+    });
   }));
 
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+  it('creates the app', () => {
     expect(app).toBeTruthy();
-  }));
+  });
 
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it('displays the GithubComponent', async(() => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!!');
+    expect(compiled.querySelector('app-github')).toBeTruthy();
   }));
 });
